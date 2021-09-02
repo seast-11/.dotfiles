@@ -1,0 +1,29 @@
+#!/bin/sh
+
+for battery in /sys/class/power_supply/BAT?*; do
+	# If non-first battery, print a space separator.
+	[ -n "${capacity+x}" ] && printf " "
+	# Sets up the status and capacity
+	case "$(cat "$battery/status")" in
+		"Full") status="⚡" ;;
+		"Discharging") status="🔋" ;;
+		"Charging") status="🔌" ;;
+		"Not charging") status="🛑" ;;
+		"Unknown") status="♻️" ;;
+	esac
+	capacity=$(cat "$battery/capacity")
+	# Will make a warn variable if discharging and low
+	[ "$status" = "🔋" ] && [ "$capacity" -le 25 ] && warn="❗"
+done 
+	
+printf "%s%s" "$status" "$warn"; unset warn
+
+case $BUTTON in
+    1) notify-send "Battery Percent"  "current capacity:$capacity%
+🔋: discharging
+🛑: not charging
+♻: stagnant charge
+🔌: charging
+⚡: charged
+❗: battery very low!" ;;
+esac

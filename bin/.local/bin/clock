@@ -1,0 +1,4 @@
+#!/bin/sh
+
+clock=$(date "+%b %d %I:%M%p")
+echo -e "$clock"

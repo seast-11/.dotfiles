@@ -1,0 +1,14 @@
+#!/bin/sh
+updates=$(checkupdates | wc -l)
+
+if [ "$updates" -gt "0" ]; then
+	icon="🆕"
+else
+	icon="🆗"
+fi
+
+echo -e "$icon $updates"
+
+case $BUTTON in 
+    1) alacritty -e sudo pacman -Syu
+esac

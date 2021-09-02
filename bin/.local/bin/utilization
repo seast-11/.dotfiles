@@ -1,0 +1,5 @@
+#!/bin/sh
+
+usage=$(mpstat 1 1 | awk '/all/{ print 100 - $NF; exit; }';)
+
+echo -e "🖥 $usage%" 

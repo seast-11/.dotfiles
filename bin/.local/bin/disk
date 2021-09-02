@@ -1,0 +1,4 @@
+#!/bin/sh
+pacman=$(du -sh /var/cache/pacman | awk '{print $1}')
+home=$(du -sh $HOME | awk '{print $1}')
+echo -e  "👾:$pacman 🏡:$home"

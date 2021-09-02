@@ -1,0 +1,6 @@
+#!/bin/sh
+free | sed -n '2{p;q}' | awk '{printf ("🧠 %2.2fGiB", ( $3 / 1024) )}'
+
+case $BUTTON in
+    1) alacritty -e htop
+esac

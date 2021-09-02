@@ -1,0 +1,6 @@
+#!/bin/sh
+
+cpu=$(sensors | awk '/Core 0/ {print "🧿" $3}')
+gpu=$(nvidia-smi -q -d temperature | awk '/GPU Current Temp / {print "🎮+" $5 "°C"}')
+
+echo -e "$cpu $gpu"
