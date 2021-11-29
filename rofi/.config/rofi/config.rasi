@@ -1,3 +1,1 @@
-configuration {
- theme: "~/.config/rofi/themes/gruvbox-dark-hard.rasi";
- }
+@theme "~/.config/rofi/themes/gruvbox-dark-hard.rasi"
