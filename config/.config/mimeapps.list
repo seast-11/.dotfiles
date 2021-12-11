@@ -17,6 +17,7 @@ video/quicktime=io.github.celluloid_player.Celluloid.desktop
 video/mpeg=io.github.celluloid_player.Celluloid.desktop
 application/pdf=xpdf.desktop
 application/octet-stream=nvim.desktop
+text/plain=nvim.desktop
 
 [Added Associations]
 x-scheme-handler/http=firefox.desktop;
@@ -37,3 +38,4 @@ video/quicktime=io.github.celluloid_player.Celluloid.desktop;
 video/mpeg=io.github.celluloid_player.Celluloid.desktop;
 application/pdf=xpdf.desktop;
 application/octet-stream=nvim.desktop;
+text/plain=nvim.desktop;
