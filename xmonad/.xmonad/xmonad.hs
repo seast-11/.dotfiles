@@ -90,6 +90,7 @@ myManageHook = composeAll
 
 myStartup :: X ()
 myStartup = do
+        spawnOnce "nvidia-settings --assign CurrentMetaMode=\"nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }\" &"
         --spawnOnce "lxsession &"
         spawnOnce "nitrogen --restore &"
         spawnOnce "picom &" 
