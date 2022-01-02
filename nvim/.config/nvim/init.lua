@@ -1,0 +1,5 @@
+require("seast11.plugins")
+require("seast11.options")
+require("seast11.keybindings")
+require("seast11.theme")
+require("seast11.plugins.config")
