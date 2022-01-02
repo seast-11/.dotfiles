@@ -1,9 +1,9 @@
 -- Autocommand that reloads neovim whenever you save the plugins.lua file
-vim.cmd([[
-  augroup packer_seast11_config
-    autocmd!
-    autocmd BufWritePost lua/seast11/plugins/init.lua source <afile> | PackerSync
-  augroup end
+vim.cmd([[
+  augroup packer_seast11_config
+    autocmd!
+    autocmd BufWritePost lua/seast11/plugins/init.lua source <afile> | PackerSync
+  augroup end
 ]])
 
 local packer = require("packer")
