@@ -29,6 +29,13 @@ alias vi=nvim
 # Pacman fever!
 alias p='sudo pacman'
 
+# package management
+alias sau='sudo apt update'
+alias saU='sudo apt upgrade'
+alias saa='sudo apt update && sudo apt upgrade'
+alias sai='sudo apt install'
+alias sar='sudo apt remove'
+
 # happy, happy directory colors
 alias ls='ls --color=auto --group-directories-first'
 alias ll='ls -la --color=auto --group-directories-first'
@@ -74,3 +81,10 @@ alias glo='git log --oneline --decorate --color'
 alias glog='git log --oneline --decorate --color --graph'
 alias glod='git pull origin develop'
 alias gst='git status'
+alias gsub='git submodule update --init'
+alias gsubr='git submodule foreach git submodule update --init'
+
+# k8
+alias kgp='kubectl get pods'
+alias kgpo='kubectl get pods -o wide'
+alias k8='kubectl.exe '
