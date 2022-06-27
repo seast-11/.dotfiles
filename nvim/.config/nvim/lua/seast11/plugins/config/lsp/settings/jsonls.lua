@@ -1,4 +1,4 @@
-local default_schemas = require("nlspsettings.jsonls").get_default_schemas()
+local default_schemas = require("nlspsettings").get_default_schemas()
 
 local schemas = {
   {
