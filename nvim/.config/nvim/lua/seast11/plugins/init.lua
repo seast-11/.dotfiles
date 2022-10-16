@@ -36,7 +36,7 @@ return packer.startup(function()
 	use({ "nvim-lualine/lualine.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
 
 	-- Better tabs
-	use({ "akinsho/bufferline.nvim", requires = "kyazdani42/nvim-web-devicons" })
+	use({ "akinsho/bufferline.nvim", tag = "v2.*", requires = "kyazdani42/nvim-web-devicons" })
 
 	-- TreeSitter plugin for better brace/bracket highlighting
 	use({ "p00f/nvim-ts-rainbow" })
@@ -62,6 +62,7 @@ return packer.startup(function()
 	use("ray-x/lsp_signature.nvim")
 	use("saadparwaiz1/cmp_luasnip")
 	use("tamago324/nlsp-settings.nvim")
+  use({"glepnir/lspsaga.nvim", branch = "main"})
 
 	-- Snippets engine and tons of snippets
 	use("rafamadriz/friendly-snippets")

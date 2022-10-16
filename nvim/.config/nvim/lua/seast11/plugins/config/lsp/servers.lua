@@ -17,7 +17,7 @@ local on_attach = function(client, bufnr)
 	vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
 	vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
 	vim.api.nvim_set_keymap("n", "<space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-	vim.api.nvim_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+	vim.api.nvim_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format{ async = true }<CR>", opts)
 	vim.api.nvim_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 	vim.api.nvim_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 	vim.api.nvim_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
@@ -45,7 +45,7 @@ local on_attach = function(client, bufnr)
 	-- end
 end
 
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local nvim_lsp = require("lspconfig")
 
 local function on_cwd()
@@ -128,7 +128,7 @@ nvim_lsp.jsonls.setup({
 })
 
 -- easy setups with no custom configurations
-local servers = { "pyright", "gopls", "clangd", "dockerls", "yamlls" }
+local servers = { "pyright", "gopls", "clangd", "dockerls", "yamlls", "tsserver" }
 
 for _, lsp in ipairs(servers) do
 	nvim_lsp[lsp].setup({
