@@ -19,6 +19,9 @@ vim.g.maplocalleader = " "
 -- faster way to ESC
 keymap("i", "ii", "<ESC>", options)
 
+-- select all
+keymap("n", "<C-a>", "ggVG", options)
+
 -- better resizing
 keymap("n", "<M-j>", ":resize -2<CR>", options)
 keymap("n", "<M-k>", ":resize +2<CR>", options)
