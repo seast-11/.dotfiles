@@ -1,18 +1,23 @@
 #!/bin/sh
 
 vol="$(amixer get Master | tail -n1 | sed -r 's/.*\[(.*)%\].*/\1/')"
+onOroff="$(amixer get Master | tail -n1 | sed 's/.*\[\(on\|off\)\]/\1/')"
 
-if [ "$vol" -gt "70" ]; then
-	icon="🔊"
-elif [ "$vol" -eq "0" ]; then
-    icon="🔇"
-elif [ "$vol" -lt "30" ]; then
-	icon="🔈"
-else
-	icon="🔉"
+if [ "$onOroff" == "off" ]; then
+  vol=0
 fi
 
-echo -e "$icon"
+if [ "$vol" -gt "70" ]; then
+	icon="^c#66d9ef^🔊"
+elif [ "$vol" -eq "0" ]; then
+    icon="^c#66d9ef^🔇"
+elif [ "$vol" -lt "30" ]; then
+	icon="^c#66d9ef^🔈"
+else
+	icon="^c#66d9ef^🔉"
+fi
+
+echo -e "$icon $vol"
 
 case $BUTTON in
     1) notify-send "📣 Volume Level" "$vol" ;;

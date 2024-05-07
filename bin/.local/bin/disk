@@ -1,5 +1,4 @@
 #!/bin/sh
 pacman=$(du -sh /var/cache/pacman | awk '{print $1}')
-home=$(du -sh $HOME | awk '{print $1}')
 rootUsed=$(df -h -P / | awk 'END{print $5}')
-echo -e  "👾:$pacman 🏡:$home 🙈:$rootUsed"
+echo -e  "^c#c3e88d^Pacman:$pacman %used:$rootUsed"
