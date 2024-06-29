@@ -18,7 +18,7 @@ rx_bytes=`expr $new_rx - $old_rx`
 tx_kbs=`expr $tx_bytes / 1024`
 rx_kbs=`expr $rx_bytes / 1024`
 
-printf  "  ⬇$rx_kbs kB/s ⬆$tx_kbs kB/s"
+printf  "^c#c53b53^  ⬇$rx_kbs kB/s ⬆$tx_kbs kB/s"
 
 case $BUTTON in
     1) ~/.local/bin/internet ;;

@@ -1,13 +1,13 @@
 Config {
-       font    = "xft:JetBrains Mono:size=11:bold:antialias=true"
-       , additionalFonts = [ "xft:JoyPixels:pixelsize=20", "xft:FontAwesome:pixelsize=20" ]
+       font    = "JetBrains Mono 11"
+       , additionalFonts = [ "Joy Pixels 18", "Font Awesome 18" ]
        , bgColor = "#282c34"
        , fgColor = "#ff6c6b"
-       , position = TopW L 95 
+       , position = Static { xpos = 0 , ypos = 0, width = 3270, height = 28 }
        , lowerOnStart = True
        , hideOnStart = False
-       , allDesktops = True
        , persistent = True
+       , allDesktops = True
        , iconRoot = "/home/sean/.xmonad/xpm/"  -- default: "."
        , commands = [
                       Run CoreTemp ["-t", "<core0>°C","-L", "40", "-H", "50", "-l", "#ecbe7b", "-n", "#ecbe7b", "-h", "red"] 50

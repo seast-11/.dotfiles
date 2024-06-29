@@ -19,6 +19,9 @@ vim.g.maplocalleader = " "
 -- faster way to ESC
 keymap("i", "ii", "<ESC>", options)
 
+-- select all
+keymap("n", "<C-a>", "ggVG", options)
+
 -- better resizing
 keymap("n", "<M-j>", ":resize -2<CR>", options)
 keymap("n", "<M-k>", ":resize +2<CR>", options)
@@ -43,6 +46,9 @@ keymap("v", ">", ">gv", options)
 keymap("n", "<C-c>", ":cclose<CR>", options)
 keymap("n", "<C-j>", ":cnext<CR>", options)
 keymap("n", "<C-k>", ":cprev<CR>", options)
+
+-- close all buffers except the active one
+keymap("n", "<leader>bd", ":%bd|e#|bd#<CR>", options)
 
 -- make copy/paste work like a human would expect it to!
 keymap("v", "p", '"_dP', options)
