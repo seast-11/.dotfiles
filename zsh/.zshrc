@@ -5,70 +5,65 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Dependancies You Need for this Config
-# zsh-syntax-highlighting - syntax highlighting for ZSH in standard repos
-# zsh-autosuggestions - Suggestions based on your history
+# History 
+HISTSIZE=110000
+SAVEHIST=100000
+HISTFILE=~/.cache/zshhistory
 
-# Initial Setup
-# touch "$HOME/.cache/zshhistory
-# Setup Alias in $HOME/zsh/aliasrc
-# git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-# echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>! ~/.zshrc
-
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
-# load paths
-[ -f "$HOME/.config/pathrc" ] && source "$HOME/.config/pathrc"
-
-# show working dir in the title
-case $TERM in
-    xterm*)
-        precmd () {print -Pn "\033]0;${PWD/#$HOME/\~}\007"}
-        ;;
-esac
-
-# Enable colors and change prompt:
-autoload -U colors && colors
-PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
-
+# colors
+autoload -U colors && colors	      # colors
+autoload -U compinit && compinit    # basic completion
+autoload -U compinit colors zcalc   # theming
+ 
 # Custom Variables
 export EDITOR=vim
-export npm_config_prefix="$HOME/.local"
 
-# History in cache directory:
-HISTSIZE=10000
-SAVEHIST=10000
-HISTFILE=~/.cache/zshhistory
-setopt appendhistory
+# load paths
+[ -f "$HOME/.config/zsh/pathrc" ] && source "$HOME/.config/zsh/pathrc"
+# Load aliases and shortcuts if existent.
+[ -f "$HOME/.config/zsh/aliasrc" ] && source "$HOME/.config/zsh/aliasrc"
+# Load options 
+[ -f "$HOME/.config/zsh/optionrc" ] && source "$HOME/.config/zsh/optionrc"
 
 # Basic auto/tab complete:
-autoload -U compinit
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' menu select
 zmodload zsh/complist
+autoload -Uz compinit
 compinit
 _comp_options+=(globdots)               # Include hidden files.
 
-# Custom ZSH Binds
+#plugins
+# source ~/.config/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+source ~/.config/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+source ~/.config/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
+source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 
+
+# you need more POWER!
+source ~/.config/zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
+
+# custom binds 
+zmodload zsh/terminfo
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+bindkey '^[[A' history-substring-search-up
+bindkey '^[OA' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey '^[OB' history-substring-search-down
 bindkey '^ ' autosuggest-accept
 bindkey '^[[H' beginning-of-line
 bindkey '^[[F' end-of-line
 bindkey '^[[3~' delete-char
-
-# Load aliases and shortcuts if existent.
-[ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
-
-# Load ; should be last.
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
-# POPOS ONLY
-# source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
-# source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+# bindkey -M vicmd '^[[A' history-substring-search-up 
+# bindkey -M vicmd '^[OA' history-substring-search-up 
+# bindkey -M vicmd '^[[B' history-substring-search-down
+# bindkey -M vicmd '^[OB' history-substring-search-down
+# bindkey -M viins '^[[A' history-substring-search-up 
+# bindkey -M viins '^[OA' history-substring-search-up 
+# bindkey -M viins '^[[B' history-substring-search-down 
+# bindkey -M viins '^[OB' history-substring-search-down
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 neofetch

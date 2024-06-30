@@ -1,0 +1,6 @@
+setopt extendedglob       # extended globbing. Allows using regular expr with *
+setopt nocaseglob         # case insensitive globbing
+setopt nobeep             # no beep
+setopt appendhistory      # append instead of overwrite
+setopt histignorealldups  # if new command is a dupe, remove older one
+setopt inc_append_history # save commands are added to history immediately or when shell exits
