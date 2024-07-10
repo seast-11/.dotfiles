@@ -1,4 +1,0 @@
-#!/bin/sh
-
-clock=$(date "+%b %d %I:%M%p")
-echo "^c#41a6b5^$clock"

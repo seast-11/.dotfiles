@@ -1,8 +1,0 @@
-#!/bin/sh
-updates=$(checkupdates | wc -l)
-
-echo -e "^c#3d59a1^Updates:$updates"
-
-case $BUTTON in 
-    1) alacritty -e sudo pacman -Syu
-esac

@@ -1,0 +1,21 @@
+[window]
+padding.x = 10
+padding.y = 10
+
+decorations = "Buttonless"
+
+opacity = 0.5
+blur = true
+
+[font]
+# The normal (roman) font face to use.
+normal = { family = "JetBrainsMono Nerd Font", size = 11.0 }
+
+# The bold font face
+bold = { family = "JetBrainsMono Nerd Font", size = 11.0 }
+
+# The italic font face
+italic = { family = "JetBrainsMono Nerd Font", size = 11.0 }
+
+# The bold italic font face
+bold_italic = { family = "JetBrainsMono Nerd Font", size = 11.0 }

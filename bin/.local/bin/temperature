@@ -1,5 +1,0 @@
-#!/bin/sh
-
-gpu=$(nvidia-smi -q -d temperature | awk '/GPU Current Temp / {print $5 "°C"}')
-
-echo -e "^c#b4f9f8^GPU:$gpu"
