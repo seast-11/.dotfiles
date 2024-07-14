@@ -3,6 +3,7 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
+		"ray-x/lsp_signature.nvim",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 		{ "folke/neodev.nvim", opts = {} },
 	},
@@ -19,6 +20,10 @@ return {
 				-- Buffer local mappings.
 				-- See `:help vim.lsp.*` for documentation on any of the below functions
 				local opts = { buffer = ev.buf, silent = true }
+
+				require("lsp_signature").on_attach({
+					-- ... setup options here ...
+				}, ev.buf)
 
 				-- set keybinds
 				opts.desc = "Show LSP references"
@@ -97,6 +102,12 @@ return {
 					},
 				})
 			end,
+			["omnisharp"] = function()
+				lspconfig["omnisharp"].setup({
+					cmd = { vim.fn.stdpath("data") .. "/mason/packages/omnisharp/omnisharp" },
+					capabilities = capabilities,
+				})
+			end,
 			["gopls"] = function()
 				-- configure Go server (with special settings)
 				lspconfig["gopls"].setup({
@@ -126,12 +137,12 @@ return {
 							},
 							-- directoryFilters = { "-vendor" }, -- Exclude vendor directory
 							linksInHover = true, -- Enable links in hover documentation
-							completion = {
-								caseSensitive = false, -- Case insensitive completions
-								deepCompletion = true, -- Enable deep completions
-								fuzzyMatching = true, -- Enable fuzzy matching
-								matchingStyle = "fuzzy", -- Fuzzy matching style
-							},
+							-- completion = {
+							-- 	caseSensitive = false, -- Case insensitive completions
+							-- 	deepCompletion = true, -- Enable deep completions
+							-- 	fuzzyMatching = true, -- Enable fuzzy matching
+							-- 	matchingStyle = "fuzzy", -- Fuzzy matching style
+							-- },
 						},
 					},
 				})
