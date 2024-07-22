@@ -1,60 +1,67 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-local options = { noremap = true, silent = false }
-local keymap = vim.api.nvim_set_keymap
+-- Step 1: Define your default options
+local default_opts = { noremap = true, silent = true }
 
--- Modes
---   normal_mode = "n",
---   insert_mode = "i",
---   visual_mode = "v",
---   visual_block_mode = "x",
---   term_mode = "t",
---   command_mode = "c",- space as the leader key
+-- Step 2: Function to merge tables
+local function merge_tables(tbl1, tbl2)
+	local result = {}
+	for k, v in pairs(tbl1) do
+		result[k] = v
+	end
+	for k, v in pairs(tbl2) do
+		result[k] = v
+	end
+	return result
+end
 
--- faster way to ESC
-keymap("i", "ii", "<ESC>", options)
+-- Step 3: Set keymaps with specific options
+local function set_keymap(mode, lhs, rhs, opts)
+	opts = merge_tables(default_opts, opts)
+	vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+end
+
+set_keymap("i", "ii", "<ESC>", { desc = "Exit insert mode with ii" })
 
 -- select all
-keymap("n", "<C-a>", "ggVG", options)
+set_keymap("n", "<C-a>", "ggVG", { desc = "Ctrl-a select all" })
 
 -- better resizing
-keymap("n", "<M-j>", ":resize -2<CR>", options)
-keymap("n", "<M-k>", ":resize +2<CR>", options)
-keymap("n", "<M-h>", ":vertical resize -2<CR>", options)
-keymap("n", "<M-l>", ":vertical resize +2<CR>", options)
+set_keymap("n", "<M-j>", ":resize -2<CR>", { desc = "resize horizontal down" })
+set_keymap("n", "<M-k>", ":resize +2<CR>", { desc = "resize horizontal up" })
+set_keymap("n", "<M-h>", ":vertical resize -2<CR>", { desc = "resize vertial down" })
+set_keymap("n", "<M-l>", ":vertical resize +2<CR>", { desc = "resize vetical up" })
+
+-- window management
+set_keymap("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
+set_keymap("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
+set_keymap("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
+set_keymap("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
+
+set_keymap("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" })
+set_keymap("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" })
+set_keymap("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })
+set_keymap("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
+set_keymap("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" })
 
 -- better window navigation
-keymap("n", "<C-h>", "<C-w>h", options)
-keymap("n", "<C-j>", "<C-w>j", options)
-keymap("n", "<C-k>", "<C-w>k", options)
-keymap("n", "<C-l>", "<C-w>l", options)
-
--- use tabs to navigate buffers
-keymap("n", "<Tab>", ":bnext<CR>", options)
-keymap("n", "<S-Tab>", ":bprevious<CR>", options)
+set_keymap("n", "<C-h>", "<C-w>h", { desc = "resize vetical up" })
+set_keymap("n", "<C-j>", "<C-w>j", { desc = "resize vetical up" })
+set_keymap("n", "<C-k>", "<C-w>k", { desc = "resize vetical up" })
+set_keymap("n", "<C-l>", "<C-w>l", { desc = "resize vetical up" })
 
 -- better indenting
-keymap("v", "<", "<gv", options)
-keymap("v", ">", ">gv", options)
+set_keymap("v", "<", "<gv", { desc = "shift text out" })
+set_keymap("v", ">", ">gv", { desc = "shift text in" })
 
 -- quick list shortcuts
-keymap("n", "<C-c>", ":cclose<CR>", options)
-keymap("n", "<C-j>", ":cnext<CR>", options)
-keymap("n", "<C-k>", ":cprev<CR>", options)
+set_keymap("n", "<C-c>", ":cclose<CR>", { desc = "close quick list" })
+set_keymap("n", "<C-j>", ":cnext<CR>", { desc = "next quick list" })
+set_keymap("n", "<C-k>", ":cprev<CR>", { desc = "prev quick list" })
 
 -- close all buffers except the active one
-keymap("n", "<leader>bd", ":%bd|e#|bd#<CR>", options)
+set_keymap("n", "<leader>bd", ":%bd|e#|bd#<CR>", { desc = "close all other buffers" })
 
 -- make copy/paste work like a human would expect it to!
-keymap("v", "p", '"_dP', options)
-
--- move text up and down for normal/visual/visual block modes
-keymap("n", "<A-j>", "<Esc>:m .+1<CR>==", options)
-keymap("n", "<A-k>", "<Esc>:m .-2<CR>==", options)
-keymap("v", "<A-j>", ":m .+1<CR>==", options)
-keymap("v", "<A-k>", ":m .-2<CR>==", options)
-keymap("x", "J", ":move '>+1<CR>gv-gv", options)
-keymap("x", "K", ":move '<-2<CR>gv-gv", options)
-keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", options)
-keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", options)
+set_keymap("v", "p", '"_dP', { desc = "make paste work like it should" })
