@@ -5,10 +5,11 @@ local opt = vim.opt
 opt.number = true
 
 -- tabs & indentation
-opt.tabstop = 2 -- 2 spaces for tabs (prettier default)
+opt.tabstop = 2 -- 2 spaces for tabs
 opt.shiftwidth = 2 -- 2 spaces for indent width
 opt.expandtab = true -- expand tab to spaces
 opt.autoindent = true -- copy indent from current line when starting new one
+opt.smartindent = true
 
 opt.wrap = false
 
@@ -24,6 +25,7 @@ opt.cursorline = true
 opt.termguicolors = true
 opt.background = "dark" -- colorschemes that can be light or dark will be made dark
 opt.signcolumn = "yes" -- show sign column so that text doesn't shift
+opt.scrolloff = 8
 
 -- backspace
 opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
@@ -37,3 +39,12 @@ opt.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
 opt.swapfile = false
+opt.backup = false
+opt.undofile = true
+
+-- LPS and formatting
+opt.updatetime = 100 -- 100ms delay before symbol highlight kicks in
+opt.winborder = "rounded" -- configure lsp handler to not look like ass
+
+-- mouse crap
+opt.mouse = "a"

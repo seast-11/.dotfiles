@@ -1,2 +1,5 @@
+require("seast11.core.colors")
+require("seast11.core.autocmds")
 require("seast11.core.options")
 require("seast11.core.keymap")
+require("seast11.core.lsp")

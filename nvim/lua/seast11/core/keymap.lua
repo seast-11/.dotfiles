@@ -27,6 +27,14 @@ set_keymap("i", "ii", "<ESC>", { desc = "Exit insert mode with ii" })
 -- select all
 set_keymap("n", "<C-a>", "ggVG", { desc = "Ctrl-a select all" })
 
+-- center search
+set_keymap("n", "n", "nzz", { desc = "search next centered" })
+set_keymap("n", "N", "Nzz", { desc = "search next centered" })
+
+--centering remaps
+set_keymap("n", "<C-d>", "<C-d>zz", { desc = "Page down and center" })
+set_keymap("n", "<C-u>", "<C-u>zz", { desc = "Page up and center" })
+
 -- better resizing
 set_keymap("n", "<M-j>", ":resize -2<CR>", { desc = "resize horizontal down" })
 set_keymap("n", "<M-k>", ":resize +2<CR>", { desc = "resize horizontal up" })
