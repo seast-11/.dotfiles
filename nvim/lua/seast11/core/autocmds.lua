@@ -4,19 +4,18 @@ local function highlight_symbol(event)
 		return
 	end
 
-	local group = vim.api.nvim_create_augroup("highlight_symbol_group", { clear = true })
-
-	vim.api.nvim_clear_autocmds({ buffer = event.buf, group = group })
+	local bufnr = event.buf
+	local group = vim.api.nvim_create_augroup("lsp_highlight" .. bufnr, { clear = true })
 
 	vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+		buffer = bufnr,
 		group = group,
-		buffer = event.buf,
 		callback = vim.lsp.buf.document_highlight,
 	})
 
 	vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+		buffer = bufnr,
 		group = group,
-		buffer = event.buf,
 		callback = vim.lsp.buf.clear_references,
 	})
 end

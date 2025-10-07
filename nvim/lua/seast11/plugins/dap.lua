@@ -101,6 +101,7 @@ return {
 			local map = vim.keymap.set
 
       -- stylua: ignore start
+			map("n", "<leader>dq", dap.terminate, { desc = "DAP Terminate" })
 			map("n", "<leader>dh", function() require("dap.ui.widgets").hover() end, { desc = "DAP Hover Expression" })
 			map("n", "<leader>db", function() dap.toggle_breakpoint() end, { desc = "DAP Toggle Breakpoint" })
 			map({ "n", "v" }, "<leader>de", function() dapview.add_expr() end, { desc = "DAP Add Expression (Watch)" })
@@ -150,13 +151,18 @@ return {
 				---------------------------------------------------------------------------
 				-- nvim-dap sign icons
 				---------------------------------------------------------------------------
-				define("DapBreakpoint", { text = "", texthl = "DapBreakpoint", linehl = "DapBreakpointLine" })
 				define(
-					"DapBreakpointCondition",
-					{ text = "", texthl = "DapBreakpointCondition", linehl = "DapBreakpointConditionLine" }
+					"DapBreakpoint",
+					{ text = "", texthl = "DapBreakpoint", linehl = "DapBreakpointLine", numhl = "" }
 				)
-				define("DapLogPoint", { text = "", texthl = "DapLogPoint", linehl = "DapLogPointLine" })
-				define("DapStopped", { text = "", texthl = "DapStopped", linehl = "DapStoppedLine" })
+				define("DapBreakpointCondition", {
+					text = "",
+					texthl = "DapBreakpointCondition",
+					linehl = "DapBreakpointConditionLine",
+					numhl = "",
+				})
+				define("DapLogPoint", { text = "", texthl = "DapLogPoint", linehl = "DapLogPointLine", numhl = "" })
+				define("DapStopped", { text = "", texthl = "DapStopped", linehl = "DapStoppedLine", numhl = "" })
 
 				hl(0, "DapBreakpoint", { fg = err_fg })
 				hl(0, "DapBreakpointCondition", { fg = warn_fg })
@@ -211,32 +217,41 @@ return {
 			-- ---------------------------
 			-- Debug function under cursor (Test or Bench)
 			-- ---------------------------
-			local function find_nearest_test_or_bench()
-				local cur = vim.fn.line(".")
-				for lnum = cur, 1, -1 do
-					local line = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1]
-					if line then
-						local test = line:match("^%s*func%s+(Test%w+)")
-						if test then
-							return "test", test
-						end
-						local bench = line:match("^%s*func%s+(Benchmark%w+)")
-						if bench then
-							return "bench", bench
+			local function find_enclosing_go_test_or_bench()
+				local ts_utils = require("nvim-treesitter.ts_utils")
+				local parsers = require("nvim-treesitter.parsers")
+				local bufnr = vim.api.nvim_get_current_buf()
+
+				if not parsers.has_parser() or parsers.get_buf_lang(bufnr) ~= "go" then
+					return nil
+				end
+
+				local node = ts_utils.get_node_at_cursor()
+				while node do
+					if node:type() == "function_declaration" then
+						local name_node = node:child(1)
+						if name_node and name_node:type() == "identifier" then
+							local name = vim.treesitter.get_node_text(name_node, bufnr)
+							if name:match("^Test") then
+								return "test", name
+							elseif name:match("^Benchmark") then
+								return "bench", name
+							end
 						end
 					end
+					node = node:parent()
 				end
 				return nil
 			end
 
 			map("n", "<leader>dt", function()
-				local kind, name = find_nearest_test_or_bench()
+				local kind, name = find_enclosing_go_test_or_bench()
 				if kind == "test" then
 					dap.run(make_test_config(name))
 				elseif kind == "bench" then
 					dap.run(make_bench_config(name))
 				else
-					print("No Test or Benchmark found above cursor")
+					print("No enclosing Test or Benchmark found above cursor")
 				end
 			end, { desc = "DAP Debug Test/Bench under cursor" })
 

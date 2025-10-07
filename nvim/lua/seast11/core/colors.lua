@@ -69,11 +69,17 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
+-- Notify current colorscheme
+function M.notify_current()
+	vim.notify("Current colorscheme: " .. (M.current_scheme or color_schemes[1]), vim.log.levels.INFO)
+end
+
 -- ✅ Set keymap safely (after everything else is ready)
 vim.api.nvim_create_autocmd("User", {
-	pattern = "VeryLazy",
+	pattern = "LazyDone", -- supposed to load last so other plugins finish
 	callback = function()
 		vim.keymap.set("n", "<leader>cc", M.toggle, { desc = "Toggle colorscheme" })
+		vim.keymap.set("n", "<leader>cC", M.notify_current, { desc = "Show current colorscheme" })
 	end,
 })
 

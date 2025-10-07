@@ -35,6 +35,7 @@ return {
     { "<leader>fg", function() Snacks.picker.grep() end, desc = "Grep" },
     { "<leader>fc", function() Snacks.picker.command_history() end, desc = "Command History" },
     { "<leader>fn", function() Snacks.picker.notifications() end, desc = "Notification History" },
+    { "<leader>fG", function() Snacks.picker.grep({ cwd = vim.fn.expand("%:p:h") }) end, desc = "Grep current dir" },
 
     -- lazygit
     { "<leader>lg", function() Snacks.lazygit() end, desc = "Lazygit" },
@@ -58,7 +59,6 @@ return {
     { "<leader>gI", function() Snacks.picker.lsp_implementations() end, desc = "Goto Implementation" },
     { "<leader>gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
     { "<leader>gs", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
-    { "<leader>gS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
 		-- stylua: ignore end
 	},
 }
