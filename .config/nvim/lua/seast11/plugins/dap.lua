@@ -3,10 +3,12 @@ return {
 		"mfussenegger/nvim-dap",
 		dependencies = {
 			"igorlfs/nvim-dap-view",
+			"leoluz/nvim-dap-go",
 		},
 		config = function()
 			local dap = require("dap")
 			local dapview = require("dap-view")
+			local dap_go = require("dap-go")
 
 			dapview.setup({
 				follow_tab = true,
@@ -21,79 +23,80 @@ return {
 				},
 			})
 
+			dap_go.setup({
+				-- use Delve's native DAP mode
+				dap_configurations = {
+					type = "go",
+					name = "Debug with args",
+					request = "launch",
+					program = "${file}",
+					args = function()
+						local args_string = vim.fn.input("Arguments: ")
+						return vim.split(args_string, " ")
+					end,
+				},
+				delve = {
+					path = "dlv",
+					initialize_timeout_sec = 20,
+					port = "${port}",
+					args = {},
+					build_flags = "",
+					detached = vim.fn.has("win32") == 0,
+				},
+			})
+
 			-- ---------------------------
-			-- Adapter (vscode-go debugAdapter.js)
+			-- C / C++ DAP (LLDB)
 			-- ---------------------------
-			dap.adapters.go = {
+			dap.adapters.lldb = {
 				type = "executable",
-				command = "node",
-				args = { os.getenv("HOME") .. "/repos/vscode-go/extension/dist/debugAdapter.js" },
+				command = "lldb-dap",
+				name = "lldb",
 			}
 
-			-- ---------------------------
-			-- Base configurations (templates)
-			-- we'll resolve ${file} / ${fileDirname} at runtime for correctness
-			-- ---------------------------
-			dap.configurations.go = {
+			dap.configurations.c = {
 				{
-					type = "go",
-					name = "Debug file",
+					name = "Launch file",
+					type = "lldb",
 					request = "launch",
-					program = "${file}", -- resolved per-buffer
-					dlvToolPath = vim.fn.exepath("dlv"),
-				},
-				{
-					type = "go",
-					name = "Debug package",
-					request = "launch",
-					program = "${fileDirname}", -- resolved per-buffer
-					dlvToolPath = vim.fn.exepath("dlv"),
-				},
-				{
-					type = "go",
-					name = "Test current file",
-					request = "launch",
-					mode = "test",
-					program = "${fileDirname}", -- run tests for package (dir)
-					dlvToolPath = vim.fn.exepath("dlv"),
-				},
-				{
-					type = "go",
-					name = "Benchmark current file",
-					request = "launch",
-					mode = "test",
-					program = "${fileDirname}",
-					args = { "-test.run=^$", "-test.bench=." },
-					dlvToolPath = vim.fn.exepath("dlv"),
+					program = function()
+						return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+					end,
+					cwd = "${workspaceFolder}",
+					stopOnEntry = false,
+					args = {}, -- optional command-line args
 				},
 			}
 
-			-- ---------------------------
-			-- Helpers
-			-- ---------------------------
-			local function make_test_config(test_name)
-				return {
-					type = "go",
-					name = "Debug test: " .. test_name,
-					request = "launch",
-					mode = "test",
-					program = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h"), -- package dir
-					args = { "-test.run=^" .. test_name .. "$" },
-					dlvToolPath = vim.fn.exepath("dlv"),
-				}
-			end
+			dap.configurations.cpp = dap.configurations.c
+			dap.configurations.rust = dap.configurations.c
 
-			local function make_bench_config(bench_name)
-				return {
-					type = "go",
-					name = "Debug bench: " .. bench_name,
+			-- ---------------------------
+			-- Python DAP (debugpy)
+			-- ---------------------------
+			dap.adapters.python = {
+				type = "executable",
+				command = "python",
+				args = { "-m", "debugpy.adapter" },
+			}
+
+			dap.configurations.python = {
+				{
+					type = "python",
 					request = "launch",
-					mode = "test",
-					program = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h"),
-					args = { "-test.run=^$", "-test.bench=^" .. bench_name .. "$" },
-					dlvToolPath = vim.fn.exepath("dlv"),
-				}
-			end
+					name = "Launch file",
+
+					program = "${file}",
+					pythonPath = function()
+						-- use active venv if present, otherwise system python
+						local venv = os.getenv("VIRTUAL_ENV")
+						if venv then
+							return venv .. "/bin/python"
+						end
+						return "/usr/bin/python"
+					end,
+				},
+			}
 
 			-- ---------------------------
 			-- Keymaps
@@ -215,58 +218,11 @@ return {
 			vim.api.nvim_create_autocmd("ColorScheme", { callback = dap_signs_and_highlights })
 
 			-- ---------------------------
-			-- Debug function under cursor (Test or Bench)
-			-- ---------------------------
-			local function find_enclosing_go_test_or_bench()
-				local ts_utils = require("nvim-treesitter.ts_utils")
-				local parsers = require("nvim-treesitter.parsers")
-				local bufnr = vim.api.nvim_get_current_buf()
-
-				if not parsers.has_parser() or parsers.get_buf_lang(bufnr) ~= "go" then
-					return nil
-				end
-
-				local node = ts_utils.get_node_at_cursor()
-				while node do
-					if node:type() == "function_declaration" then
-						local name_node = node:child(1)
-						if name_node and name_node:type() == "identifier" then
-							local name = vim.treesitter.get_node_text(name_node, bufnr)
-							if name:match("^Test") then
-								return "test", name
-							elseif name:match("^Benchmark") then
-								return "bench", name
-							end
-						end
-					end
-					node = node:parent()
-				end
-				return nil
-			end
-
-			map("n", "<leader>dt", function()
-				local kind, name = find_enclosing_go_test_or_bench()
-				if kind == "test" then
-					dap.run(make_test_config(name))
-				elseif kind == "bench" then
-					dap.run(make_bench_config(name))
-				else
-					print("No enclosing Test or Benchmark found above cursor")
-				end
-			end, { desc = "DAP Debug Test/Bench under cursor" })
-
-			-- ---------------------------
 			-- Auto open/close dap-view
 			-- ---------------------------
 			dap.listeners.after.event_initialized["dapview_open"] = function()
 				dapview.open()
 			end
-			-- dap.listeners.before.event_terminated["dapview_close"] = function()
-			-- 	dapview.close()
-			-- end
-			-- dap.listeners.before.event_exited["dapview_close"] = function()
-			-- 	dapview.close()
-			-- end
 		end,
 	},
 }

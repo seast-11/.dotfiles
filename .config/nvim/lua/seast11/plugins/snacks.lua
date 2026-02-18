@@ -22,6 +22,7 @@ return {
 			},
 			sources = {
 				explorer = {
+          hidden = true,
 					jump = { close = true },
 				},
 			},
@@ -36,6 +37,7 @@ return {
     { "<leader>fc", function() Snacks.picker.command_history() end, desc = "Command History" },
     { "<leader>fn", function() Snacks.picker.notifications() end, desc = "Notification History" },
     { "<leader>fG", function() Snacks.picker.grep({ cwd = vim.fn.expand("%:p:h") }) end, desc = "Grep current dir" },
+    { "<leader>fB", function() Snacks.picker.grep({ glob = vim.fn.expand("%:t") }) end, desc = "Grep current buffer" },
 
     -- lazygit
     { "<leader>lg", function() Snacks.lazygit() end, desc = "Lazygit" },

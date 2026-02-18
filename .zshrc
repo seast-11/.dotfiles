@@ -1,3 +1,10 @@
+[[ -o interactive ]] || return
+
+# happy, happy wallpaper styles
+if [[ $EUID -ne 0 && -r "$HOME/.cache/wal/sequences" ]]; then
+  cat "$HOME/.cache/wal/sequences"
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -16,7 +23,8 @@ autoload -U compinit && compinit    # basic completion
 autoload -U compinit colors zcalc   # theming
  
 # Custom Variables
-export EDITOR=vim
+export EDITOR=nvim
+export BAT_THEME="Visual Studio Dark+"
 
 # load paths
 [ -f "$HOME/.config/zsh/pathrc" ] && source "$HOME/.config/zsh/pathrc"
@@ -31,6 +39,11 @@ zmodload zsh/complist
 autoload -Uz compinit
 compinit
 _comp_options+=(globdots)               # Include hidden files.
+
+# Set up fzf key bindings and fuzzy completion
+export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+source <(fzf --zsh)
 
 #plugins
 # source ~/.config/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
@@ -66,4 +79,4 @@ bindkey '^[[3~' delete-char
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
-neofetch
+fastfetch

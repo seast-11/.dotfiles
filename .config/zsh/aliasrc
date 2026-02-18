@@ -29,21 +29,15 @@ alias vi=nvim
 # Pacman fever!
 alias p='sudo pacman'
 
-# package management
-alias sau='sudo apt update'
-alias saU='sudo apt upgrade'
-alias saa='sudo apt update && sudo apt upgrade'
-alias sai='sudo apt install'
-alias sar='sudo apt remove'
-
 # happy, happy directory colors
-alias ls='ls --color=auto --group-directories-first'
-alias ll='ls -la --color=auto --group-directories-first'
+alias ls='eza --icons=always'
+alias ll='eza -la --icons=always --long --color=always --group-directories-first --git'
 
 # colorize
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
+alias cat='bat'
 
 # confirm before overwriting something
 alias cp="cp -i"
@@ -54,6 +48,7 @@ alias rm='rm -i'
 alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
 alias du='du -h'                          #human-readable sizes
+alias feh='feh --scale-down'
 
 # troubleshooting
 alias sysf='systemctl --failed'
@@ -66,9 +61,6 @@ alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 ## get top process eating cpu ##
 alias pscpu='ps auxf | sort -nr -k 3'
 alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
-
-# bare git repo alias for dotfiles
-alias dotfile="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME"
 
 # git magic
 alias g='git'

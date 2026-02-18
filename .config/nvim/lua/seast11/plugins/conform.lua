@@ -8,6 +8,14 @@ return {
 			formatters_by_ft = {
 				lua = { "stylua" },
 				go = { "gofumpt" },
+        python = { "ruff_format" }, 
+				sh = { "shfmt" },
+				bash = { "shfmt" },
+				zsh = { "shfmt" },
+        yaml = { "prettier" },
+        yml = { "prettier" },
+        c = { "clang_format" },
+        cpp = { "clang_format" },
 			},
       format_on_save = false
 		})

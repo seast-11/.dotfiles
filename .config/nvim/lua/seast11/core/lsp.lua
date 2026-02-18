@@ -9,6 +9,10 @@ local capabilities = {
 
 vim.lsp.enable({
 	"gopls",
+	"pyright",
+	"bashls",
+	"yamlls",
+	"clangd",
 })
 
 -- ===============================
