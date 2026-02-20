@@ -21,7 +21,7 @@ fi
 picom --animations &
 
 # Start dwmblocks for status bar
-dwmblocks &
+/home/sean/.local/bin/goblocks &
 
 # Start DWM and log errors
 while true; do
