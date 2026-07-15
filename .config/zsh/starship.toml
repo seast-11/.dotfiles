@@ -1,0 +1,220 @@
+# -----------------------------
+# General
+# -----------------------------
+add_newline = false
+command_timeout = 1000
+
+palette = "tokyonight"
+
+format = """
+$os\
+$directory\
+${custom.go}\
+$c\
+$cpp\
+$rust\
+$python\
+${custom.react}\
+$dotnet\
+$cmake\
+${custom.make}\
+$git_branch\
+$git_status\
+$fill\
+$cmd_duration
+$character
+"""
+
+[palettes.tokyonight]
+blue   = "#7aa2f7"
+skyblue = "#7dcfff"
+mauve  = "#bb9af7"
+green  = "#9ece6a"
+red    = "#f7768e"
+pink   = "#f34b7d"
+tan    = "#dea584"
+navy   = "#3572a5"
+cyan   = "#61dafb"
+violet = "#8a63d2"
+
+# Push everything after this to the right
+[fill]
+symbol = " "
+
+# -----------------------------
+# Character
+# -----------------------------
+[character]
+success_symbol = "[❯](bold blue)"
+error_symbol = "[](bold red)"
+vimcmd_symbol = "[](bold mauve)"
+
+[cmd_duration]
+min_time = 500
+format = ' elapsed [$duration](bold yellow)'
+
+# -----------------------------
+# OS
+# -----------------------------
+[os]
+disabled = false
+style = "bold blue"
+
+[os.symbols]
+Arch = " "
+CachyOS = " "
+Ubuntu = " "
+Fedora = " "
+Debian = " "
+Windows = "󰨡 "
+Macos = "󰀵 "
+Unknown = "󰘔 "
+
+# -----------------------------
+# Directory
+# -----------------------------
+[directory]
+style = "bold skyblue"
+read_only = " "
+truncation_length = 0
+truncate_to_repo = false 
+home_symbol = "~"
+
+# -----------------------------
+# Git Branch
+# -----------------------------
+[git_branch]
+symbol = " "
+style = "bold mauve"
+format = "[$symbol$branch]($style) "
+
+# -----------------------------
+# Git Status
+# -----------------------------
+[git_status]
+style = "green"
+format = '([$all_status$ahead_behind]($style)) '
+conflicted = "⚔ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕"
+up_to_date = ""
+untracked = "?${count}"
+stashed = "\\$${count}"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+[custom.go]
+when = '''test -f go.mod || test -f go.sum || ls *.go >/dev/null 2>&1 || { m=$(go env GOMOD 2>/dev/null); test -n "$m" && test "$m" != "/dev/null"; }'''
+command = '''
+sys=$(go env GOVERSION 2>/dev/null | sed 's/^go//')
+gomod=$(go env GOMOD 2>/dev/null)
+if [ -n "$gomod" ] && [ "$gomod" != "/dev/null" ] && [ -f "$gomod" ]; then
+  mod=$(awk '/^go / {print $2; exit}' "$gomod")
+fi
+if [ -n "$mod" ]; then
+  printf '%s → %s' "$sys" "$mod"
+else
+  printf '%s' "$sys"
+fi
+'''
+symbol = " "
+style = "bold blue"
+format = "[$symbol$output]($style) "
+
+[cmake]
+symbol = "△ "
+style = "bold skyblue"
+format = "[$symbol$version]($style) "
+
+[c]
+symbol = "󰙱 "
+style = "bold red"
+format = "[$symbol$version]($style) "
+
+[cpp]
+symbol = "󰙲 "
+style = "bold pink"
+format = "[$symbol$version]($style) "
+
+[rust]
+disabled = false
+symbol = " "
+style = "bold tan"
+format = "[$symbol$version]($style) "
+
+[python]
+disabled = false
+symbol = " "
+style = "bold navy"
+format = "[$symbol$version]($style) "
+detect_extensions = []
+detect_files = [
+  "pyproject.toml",
+  "requirements.txt",
+  "requirements-dev.txt",
+  "Pipfile",
+  "poetry.lock",
+  "uv.lock",
+  ".python-version",
+  "pyvenv.cfg"
+]
+detect_folders = [".venv", "venv"]
+
+[custom.react]
+when = '''test -f package.json && grep -q '"react"' package.json'''
+command = '''grep -m1 '"react"' package.json | sed -E 's/.*: *"([^"]+)".*/\1/' '''
+symbol = " "
+style = "bold cyan"
+format = "[$symbol$output]($style) "
+
+[custom.make]
+when = "test -f Makefile || test -f makefile || test -f GNUmakefile"
+command = "printf ''"
+symbol = "󱁤 "
+style = "bold green"
+format = "[$symbol]($style) "
+
+[dotnet]
+symbol = "󰌛 "
+heuristic = false
+style = "bold violet"
+format = "[$symbol$version]($style) "
+
+# -----------------------------
+# Disable unused modules
+# -----------------------------
+[package]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[java]
+disabled = true
+
+[docker_context]
+disabled = true
+
+[kubernetes]
+disabled = true
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[azure]
+disabled = true
+
+[terraform]
+disabled = true
+
+[memory_usage]
+disabled = true
+
+[battery]
+disabled = true

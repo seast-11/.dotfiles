@@ -1,8 +1,0 @@
-#!/bin/sh
-
-icon="⚙"
-echo -e "$icon  "
-
-case $BUTTON in
-    1) ~/.local/bin/power_menu ;;
-esac

@@ -1,6 +1,0 @@
-#!/bin/sh
-
-cpu=$(sensors | awk '/Core 0/ {print $3}')
-usage=$(mpstat 1 1 | awk '/all/{ print 100 - $NF; exit; }';)
-
-echo -e "^c#ff007c^CPU:$usage% $cpu" 
