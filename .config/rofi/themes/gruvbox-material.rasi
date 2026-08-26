@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Gruvbox Material theme for Rofi
+   Based on Gruvbox Material color scheme
+   ========================================================================== */
+
+* {
+    /* Theme settings */
+    highlight: bold italic;
+    scrollbar: true;
+
+    /* Gruvbox Material colors */
+    bg:              #282828;
+    bg-alt:          #32302f;
+    surface:         #32302f;
+    mantle:          #32302f;
+    crust:           #202020;
+    overlay:         #928374;
+    subtext:         #a89984;
+    text:            #d5c4a1;
+    white:           #ebdbb2;
+
+    red:             #ea6962;
+    green:           #a9b665;
+    yellow:          #d8a657;
+    blue:            #7b8f9c;
+    magenta:         #b3767e;
+    cyan:            #89b482;
+    violet:          #7b8f9c;
+
+    /* Theme mapping */
+    background:                  @bg;
+    background-color:            @background;
+    foreground:                  @text;
+    border-color:                @overlay;
+    separatorcolor:              @border-color;
+    scrollbar-handle:            @border-color;
+
+    normal-background:           @background;
+    normal-foreground:           @foreground;
+    alternate-normal-background: @mantle;
+    alternate-normal-foreground: @foreground;
+    selected-normal-background:  @surface;
+    selected-normal-foreground:  @white;
+
+    active-background:           @blue;
+    active-foreground:           @background;
+    alternate-active-background: @active-background;
+    alternate-active-foreground: @active-foreground;
+    selected-active-background:  @cyan;
+    selected-active-foreground:  @active-foreground;
+
+    urgent-background:           @red;
+    urgent-foreground:           @background;
+    alternate-urgent-background: @urgent-background;
+    alternate-urgent-foreground: @urgent-foreground;
+    selected-urgent-background:  @yellow;
+    selected-urgent-foreground:  @urgent-foreground;
+}
+
+@import "common"

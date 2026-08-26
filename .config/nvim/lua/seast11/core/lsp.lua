@@ -1,18 +1,11 @@
-local capabilities = {
-	textDocument = {
-		foldingRange = {
-			dynamicRegistration = false,
-			lineFoldingOnly = true,
-		},
-	},
-}
-
 vim.lsp.enable({
 	"gopls",
+  "golangci_lint_ls",
 	"pyright",
 	"bashls",
 	"yamlls",
 	"clangd",
+	"lua_ls",
 })
 
 -- ===============================

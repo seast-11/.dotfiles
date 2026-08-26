@@ -1,8 +1,8 @@
-# To avoid screen tearing
-nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }" &
+# Export display env to systemd user session
+systemctl --user import-environment DISPLAY XAUTHORITY
 
 # Randomly pick a wallpaper from ~/Wallpapers
-RANDOM_WALLPAPER=$(find /home/sean/Wallpapers -type f | shuf -n 1)
+RANDOM_WALLPAPER=$(find ~/Wallpapers -type f | shuf -n 1)
 
 xwallpaper --zoom "$RANDOM_WALLPAPER"
 
@@ -17,11 +17,15 @@ if [[ -f "$HOME/.cache/wal/colors.xresources" ]]; then
     xrdb -merge "$HOME/.cache/wal/colors.xresources"
 fi
 
+# setup resolution
+xrandr --output DP-1 --mode 5120x2160 --rate 120
+xrandr --output DP-1 --set "Broadcast RGB" "Full"
+
 # Start picom for window effects
-picom --animations &
+picom --config ~/.config/picom/picom.conf &
 
 # Start dwmblocks for status bar
-/home/sean/.local/bin/goblocks &
+dwmblocks &
 
 # Start DWM and log errors
 while true; do

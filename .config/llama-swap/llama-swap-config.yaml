@@ -1,0 +1,143 @@
+# llama-swap config — cachy-ai (Strix Halo, ROCm)
+#
+# Client-facing endpoint: llama-swap listens on 127.0.0.1:8080 (set via --listen
+# when you launch the binary, see ~/.local/bin/llama-swap-launcher.sh).
+# `startPort` below is a DIFFERENT thing: it's the pool llama-swap picks FROM when
+# it assigns each backend process its own ${PORT} via the macro. Keep it well clear
+# of 8080 and anything else already in use on this box.
+#
+
+logLevel: info
+healthCheckTimeout: 300
+startPort: 9200
+
+models:
+  # ── DeepSeek-V4-Flash-0731 ─────────────────────────────────────────────────────────
+  "DeepSeek-V4-Flash-0731":
+    proxy: "http://127.0.0.1:${PORT}"
+    cmd: |
+      /data/llama.cpp/build/bin/llama-server \
+        --model /data/models/llm/DeepSeek-V4-Flash-0731/DeepSeek-V4-Flash-0731-UD-IQ3_S-00001-of-00004.gguf \
+        --host 127.0.0.1 --port ${PORT} \
+        --ctx-size 262144 \
+        --n-gpu-layers 999 \
+        --load-mode none \
+        --flash-attn on \
+        --jinja \
+        --temp 1.0 \
+        --top-p 0.95 \
+        --min-p 0.0 \
+        --chat-template-kwargs '{"reasoning_effort":"max"}'
+
+  # ── Qwen3.6-27B-Q8 ─────────────────────────────────────────────────────────
+  "Qwen3.6-27B-Q8":
+    proxy: "http://127.0.0.1:${PORT}"
+    cmd: |
+      /data/llama.cpp/build/bin/llama-server \
+        --model /data/models/llm/Qwen3.6-27B-Q8/q8/Qwen3.6-27B-Q8_0.gguf \
+        --host 127.0.0.1 --port ${PORT} \
+        --ctx-size 65536 \
+        --n-gpu-layers 999 \
+        --flash-attn on
+
+  # ── Qwen3-32B-Q8 ───────────────────────────────────────────────────────────
+  "Qwen3-32B-Q8":
+    proxy: "http://127.0.0.1:${PORT}"
+    cmd: |
+      /data/llama.cpp/build/bin/llama-server \
+        --model /data/models/llm/Qwen3-32B-Q8/q8/Qwen3-32B-Q8_0.gguf \
+        --host 127.0.0.1 --port ${PORT} \
+        --ctx-size 65536 \
+        --n-gpu-layers 999 \
+        --flash-attn on
+
+  # ── Qwen3.5-35B-Q8 ─────────────────────────────────────────────────────────
+  "Qwen3.5-35B-Q8":
+    proxy: "http://127.0.0.1:${PORT}"
+    cmd: |
+      /data/llama.cpp/build/bin/llama-server \
+        --model /data/models/llm/Qwen3.5-35B-Q8/q8/Qwen_Qwen3.5-35B-A3B-Q8_0.gguf \
+        --host 127.0.0.1 --port ${PORT} \
+        --ctx-size 65536 \
+        --n-gpu-layers 999 \
+        --flash-attn on
+
+  # ── Llama4-Scout-Q4 (MoE) ──────────────────────────────────────────────────
+  "Llama4-Scout-Q4":
+    proxy: "http://127.0.0.1:${PORT}"
+    cmd: |
+      /data/llama.cpp/build/bin/llama-server \
+        --model /data/models/llm/Llama4-Scout-Q4/q4_k_m/Llama-4-Scout-17B-16E-Instruct-Q4_K_M-merged.gguf \
+        --host 127.0.0.1 --port ${PORT} \
+        --ctx-size 131072 \
+        --n-gpu-layers 999 \
+        --flash-attn on
+
+  # ── Qwen2.5-VL-72B (vision) ────────────────────────────────────────────────
+  "Qwen2.5-VL-72B":
+    proxy: "http://127.0.0.1:${PORT}"
+    cmd: |
+      /data/llama.cpp/build/bin/llama-server \
+        --model /data/models/llm/Qwen2.5-VL-72B/q6_k/Qwen2.5-VL-72B-Instruct-q6_k_m-Q6_K.gguf \
+        --mmproj /data/models/llm/Qwen2.5-VL-72B/q6_k/Qwen2.5-VL-72B-Instruct-mmproj-f16.gguf \
+        --host 127.0.0.1 --port ${PORT} \
+        --ctx-size 32768 \
+        --n-gpu-layers 999 \
+        --flash-attn on \
+        --no-mmap
+
+  # ── Phi4-Vision-Q8 (vision) ────────────────────────────────────────────────
+  "Phi4-Vision-Q8":
+    proxy: "http://127.0.0.1:${PORT}"
+    cmd: |
+      /data/llama.cpp/build/bin/llama-server \
+        --model /data/models/llm/Phi4-Vision-Q8/q8/microsoft.Phi-4-reasoning-vision-15B.f16.gguf.Q8_0.gguf \
+        --mmproj /data/models/llm/Phi4-Vision-Q8/q8/mmproj-microsoft.Phi-4-reasoning-vision-15B.f16.gguf \
+        --host 127.0.0.1 --port ${PORT} \
+        --ctx-size 16384 \
+        --n-gpu-layers 999 \
+        --flash-attn on
+
+  # ── Qwen3-Coder-Next-Q5 ────────────────────────────────────────────────────
+  "Qwen3-Coder-Next-Q5":
+    proxy: "http://127.0.0.1:${PORT}"
+    cmd: |
+      /data/llama.cpp/build/bin/llama-server \
+        --model /data/models/llm/Qwen3-Coder-Next-Q5/q5_k_m/Qwen3-Coder-Next-Q5_K_M-00001-of-00004.gguf \
+        --host 127.0.0.1 --port ${PORT} \
+        --ctx-size 65536 \
+        --n-gpu-layers 999 \
+        --flash-attn on
+
+  # MTP (Multi-Token Prediction) is built into this model — no separate draft
+  # model needed. Uses lower batch/ubatch from strix-infer2.sh (batch=1024,
+  # ubatch=256) and mmap off for the 73B single-file GGUF.
+  "Qwen3.5-122B-MTP":
+    proxy: "http://127.0.0.1:${PORT}"
+    cmd: |
+      /data/llama.cpp/build/bin/llama-server \
+        --model /data/models/llm/Qwen3.5-122B-A10B-MTP-Q4/q4_k_m/Qwen3.5-122B-A10B-UD-Q4_K_M.gguf \
+        --host 127.0.0.1 --port ${PORT} \
+        --ctx-size 131072 \
+        --n-gpu-layers 999 \
+        --flash-attn on \
+        --no-mmap \
+        --batch-size 1024 \
+        --ubatch-size 256
+
+  # ── Qwen3-VL-30B-A3B-Instruct (vision, MoE) ───────────────────────────────
+  "Qwen3-VL-30B-A3B-Instruct":
+    proxy: "http://127.0.0.1:${PORT}"
+    cmd: |
+      /data/llama.cpp/build/bin/llama-server \
+        --model /data/models/llm/qwen3-vl-30b-a3b-instruct/Qwen3-VL-30B-A3B-Instruct-UD-Q8_K_XL.gguf \
+        --mmproj /data/models/llm/qwen3-vl-30b-a3b-instruct/mmproj-F16.gguf \
+        --host 127.0.0.1 --port ${PORT} \
+        --ctx-size 262144 \
+        --n-gpu-layers 999 \
+        --flash-attn on
+
+# No `groups` section defined on purpose: with none configured, llama-swap
+# treats every model above as mutually exclusive — starting one stops whatever
+# was previously running first. That's exactly what you want on shared unified
+# memory; nothing else to configure for that behavior.

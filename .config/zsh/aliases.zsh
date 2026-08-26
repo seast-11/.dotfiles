@@ -1,3 +1,7 @@
+# ~/.config/zsh/aliases.zsh
+#
+# Where does he get those wonderful toys??
+
 # # ex - archive extractor
 # # usage: ex <file>
 ex ()
@@ -23,44 +27,28 @@ ex ()
   fi
 }
 
-# Highlander
-alias vi=nvim
+alias ls='eza --icons --group-directories-first'
+alias ll='eza -la --icons --group-directories-first'
+alias tree='eza --tree --icons'
 
-# Pacman fever!
-alias p='sudo pacman'
-
-# happy, happy directory colors
-alias ls='eza --icons=always'
-alias ll='eza -la --icons=always --long --color=always --group-directories-first --git'
-
-# colorize
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
 alias cat='bat'
 
-# confirm before overwriting something
+alias grep='grep --color=auto'
+alias vim='nvim'
+alias vi='nvim'
+alias p='sudo pacman'
+
 alias cp="cp -i"
 alias mv='mv -i'
 alias rm='rm -i'
 
-# adding flags
 alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
 alias du='du -h'                          #human-readable sizes
 alias feh='feh --scale-down'
 
-# troubleshooting
 alias sysf='systemctl --failed'
 alias jrnlf='sudo journalctl -p 3 -xb'
-
-## get top process eating memory
-alias psmem='ps auxf | sort -nr -k 4'
-alias psmem10='ps auxf | sort -nr -k 4 | head -10'
-
-## get top process eating cpu ##
-alias pscpu='ps auxf | sort -nr -k 3'
-alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
 
 # git magic
 alias g='git'

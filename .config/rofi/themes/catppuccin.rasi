@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Catppuccin Mocha theme for Rofi
+   Based on Catppuccin color scheme
+   https://github.com/catppuccin/catppuccin
+   ========================================================================== */
+
+* {
+    /* Theme settings */
+    highlight: bold italic;
+    scrollbar: true;
+
+    /* Catppuccin Mocha colors */
+    bg:              #1e1e2e;
+    bg-alt:          #181825;
+    surface:         #313244;
+    mantle:          #181825;
+    crust:           #11111b;
+    overlay:         #6c7086;
+    subtext:         #a6adc8;
+    text:            #bac2de;
+    white:           #cdd6f4;
+
+    rosewater:       #f5e0dc;
+    flamingo:        #f2cdcd;
+    pink:            #f5c2b7;
+    maroon:          #eba0bc;
+    red:             #f38fa8;
+    peach:           #fab387;
+    yellow:          #f9e2af;
+    green:           #a6e3a1;
+    teal:            #94e2d5;
+    blue:            #89b4fa;
+    lavender:        #b8b8f8;
+    mauve:           #cba6f8;
+
+    /* Theme mapping */
+    background:                  @bg;
+    background-color:            @background;
+    foreground:                  @text;
+    border-color:                @overlay;
+    separatorcolor:              @border-color;
+    scrollbar-handle:            @border-color;
+
+    normal-background:           @background;
+    normal-foreground:           @foreground;
+    alternate-normal-background: @mantle;
+    alternate-normal-foreground: @foreground;
+    selected-normal-background:  @surface;
+    selected-normal-foreground:  @white;
+
+    active-background:           @blue;
+    active-foreground:           @background;
+    alternate-active-background: @active-background;
+    alternate-active-foreground: @active-foreground;
+    selected-active-background:  @teal;
+    selected-active-foreground:  @active-foreground;
+
+    urgent-background:           @red;
+    urgent-foreground:           @background;
+    alternate-urgent-background: @urgent-background;
+    alternate-urgent-foreground: @urgent-foreground;
+    selected-urgent-background:  @peach;
+    selected-urgent-foreground:  @urgent-foreground;
+}
+
+@import "common"

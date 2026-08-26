@@ -1,0 +1,7 @@
+/*@import "themes/catppuccin.rasi"*/
+
+configuration {
+    font: "JetBrainsMono Nerd Font 17";
+}
+
+@import "~/.cache/wal/colors-rofi-dark"

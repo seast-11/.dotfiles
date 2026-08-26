@@ -1,4 +1,4 @@
-vim.cmd("let g:netrw_liststyle = 3") -- built-in exploer to use tree view
+vim.cmd("let g:netrw_liststyle = 3") -- built-in explorer to use tree view
 
 local opt = vim.opt
 

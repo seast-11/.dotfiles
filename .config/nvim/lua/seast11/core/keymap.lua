@@ -1,75 +1,62 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Step 1: Define your default options
-local default_opts = { noremap = true, silent = true }
-
--- Step 2: Function to merge tables
-local function merge_tables(tbl1, tbl2)
-	local result = {}
-	for k, v in pairs(tbl1) do
-		result[k] = v
-	end
-	for k, v in pairs(tbl2) do
-		result[k] = v
-	end
-	return result
-end
-
--- Step 3: Set keymaps with specific options
-local function set_keymap(mode, lhs, rhs, opts)
-	opts = merge_tables(default_opts, opts)
-	vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
-end
-
-set_keymap("i", "ii", "<ESC>", { desc = "Exit insert mode with ii" })
+-- exit insert mode
+vim.keymap.set("i", "ii", "<ESC>", { silent = true, desc = "Exit insert mode with ii" })
 
 -- select all
-set_keymap("n", "<C-a>", "ggVG", { desc = "Ctrl-a select all" })
+vim.keymap.set("n", "<C-a>", "ggVG", { silent = true, desc = "Select all" })
 
--- center search
-set_keymap("n", "n", "nzz", { desc = "search next centered" })
-set_keymap("n", "N", "Nzz", { desc = "search next centered" })
+-- center search results
+vim.keymap.set("n", "n", "nzz", { silent = true, desc = "Next search result, centered" })
+vim.keymap.set("n", "N", "Nzz", { silent = true, desc = "Previous search result, centered" })
 
---centering remaps
-set_keymap("n", "<C-d>", "<C-d>zz", { desc = "Page down and center" })
-set_keymap("n", "<C-u>", "<C-u>zz", { desc = "Page up and center" })
+-- centering scroll
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { silent = true, desc = "Page down, centered" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { silent = true, desc = "Page up, centered" })
 
--- better resizing
-set_keymap("n", "<M-j>", ":resize -2<CR>", { desc = "resize horizontal down" })
-set_keymap("n", "<M-k>", ":resize +2<CR>", { desc = "resize horizontal up" })
-set_keymap("n", "<M-h>", ":vertical resize -2<CR>", { desc = "resize vertial down" })
-set_keymap("n", "<M-l>", ":vertical resize +2<CR>", { desc = "resize vetical up" })
+-- resizing splits
+vim.keymap.set("n", "<M-j>", ":resize -2<CR>", { silent = true, desc = "Decrease window height" })
+vim.keymap.set("n", "<M-k>", ":resize +2<CR>", { silent = true, desc = "Increase window height" })
+vim.keymap.set("n", "<M-h>", ":vertical resize -2<CR>", { silent = true, desc = "Decrease window width" })
+vim.keymap.set("n", "<M-l>", ":vertical resize +2<CR>", { silent = true, desc = "Increase window width" })
 
 -- window management
-set_keymap("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
-set_keymap("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
-set_keymap("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
-set_keymap("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
+vim.keymap.set("n", "<leader>sv", "<C-w>v", { silent = true, desc = "Split window vertically" })
+vim.keymap.set("n", "<leader>sh", "<C-w>s", { silent = true, desc = "Split window horizontally" })
+vim.keymap.set("n", "<leader>se", "<C-w>=", { silent = true, desc = "Make splits equal size" })
+vim.keymap.set("n", "<leader>sx", "<cmd>close<CR>", { silent = true, desc = "Close current split" })
+vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { silent = true, desc = "Open new tab" })
+vim.keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { silent = true, desc = "Close current tab" })
+vim.keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { silent = true, desc = "Go to next tab" })
+vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { silent = true, desc = "Go to previous tab" })
+vim.keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { silent = true, desc = "Open current buffer in new tab" })
 
-set_keymap("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" })
-set_keymap("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" })
-set_keymap("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })
-set_keymap("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
-set_keymap("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" })
-
--- better window navigation
-set_keymap("n", "<C-h>", "<C-w>h", { desc = "resize vetical up" })
-set_keymap("n", "<C-j>", "<C-w>j", { desc = "resize vetical up" })
-set_keymap("n", "<C-k>", "<C-w>k", { desc = "resize vetical up" })
-set_keymap("n", "<C-l>", "<C-w>l", { desc = "resize vetical up" })
+-- window navigation
+vim.keymap.set("n", "<C-h>", "<C-w>h", { silent = true, desc = "Move to left window" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { silent = true, desc = "Move to window below" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { silent = true, desc = "Move to window above" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { silent = true, desc = "Move to right window" })
 
 -- better indenting
-set_keymap("v", "<", "<gv", { desc = "shift text out" })
-set_keymap("v", ">", ">gv", { desc = "shift text in" })
+vim.keymap.set("v", "<", "<gv", { silent = true, desc = "Shift selection left, keep selection" })
+vim.keymap.set("v", ">", ">gv", { silent = true, desc = "Shift selection right, keep selection" })
 
--- quick list shortcuts
-set_keymap("n", "<C-c>", ":cclose<CR>", { desc = "close quick list" })
-set_keymap("n", "<C-j>", ":cnext<CR>", { desc = "next quick list" })
-set_keymap("n", "<C-k>", ":cprev<CR>", { desc = "prev quick list" })
+-- quickfix
+vim.keymap.set("n", "<C-c>", ":cclose<CR>", { silent = true, desc = "Close quickfix list" })
 
 -- close all buffers except the active one
-set_keymap("n", "<leader>bd", ":%bd|e#|bd#<CR>", { desc = "close all other buffers" })
+vim.keymap.set("n", "<leader>bd", ":%bd|e#|bd#<CR>", { silent = true, desc = "Close all other buffers" })
 
--- make copy/paste work like a human would expect it to!
-set_keymap("v", "p", '"_dP', { desc = "make paste work like it should" })
+-- paste without yanking the replaced text
+vim.keymap.set("v", "p", '"_dP', { silent = true, desc = "Paste over selection without overwriting register" })
+
+-- Update all plugins immediately, no confirmation buffer
+vim.keymap.set("n", "<leader>pu", function()
+	vim.pack.update(nil, { force = true })
+end, { desc = "Pack: update all plugins" })
+
+-- Just see what's pending — opens the confirm buffer, don't write it
+vim.keymap.set("n", "<leader>pc", function()
+	vim.pack.update()
+end, { desc = "Pack: check for updates" })

@@ -13,5 +13,4 @@ return {
 			},
 		},
 	},
-	capabilities = capabilities,
 }

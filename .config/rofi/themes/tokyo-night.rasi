@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Tokyo Night theme for Rofi
+   Based on Tokyo Night color scheme
+   ========================================================================== */
+
+* {
+    /* Theme settings */
+    highlight: bold italic;
+    scrollbar: true;
+
+    /* Tokyo Night colors */
+    bg:              #1a1b26;
+    bg-alt:          #292b3a;
+    surface:         #292b3a;
+    mantle:          #292b3a;
+    crust:           #16171e;
+    overlay:         #565f89;
+    subtext:         #7a8ba8;
+    text:            #9aa5b4;
+    white:           #c0caf5;
+
+    red:             #f7768e;
+    green:           #9ece6a;
+    yellow:          #e0af68;
+    blue:            #7aa2f7;
+    magenta:         #bb9af7;
+    cyan:            #7dc4f0;
+    violet:          #7aa2f7;
+
+    /* Theme mapping */
+    background:                  @bg;
+    background-color:            @background;
+    foreground:                  @text;
+    border-color:                @overlay;
+    separatorcolor:              @border-color;
+    scrollbar-handle:            @border-color;
+
+    normal-background:           @background;
+    normal-foreground:           @foreground;
+    alternate-normal-background: @mantle;
+    alternate-normal-foreground: @foreground;
+    selected-normal-background:  @surface;
+    selected-normal-foreground:  @white;
+
+    active-background:           @blue;
+    active-foreground:           @background;
+    alternate-active-background: @active-background;
+    alternate-active-foreground: @active-foreground;
+    selected-active-background:  @cyan;
+    selected-active-foreground:  @active-foreground;
+
+    urgent-background:           @red;
+    urgent-foreground:           @background;
+    alternate-urgent-background: @urgent-background;
+    alternate-urgent-foreground: @urgent-foreground;
+    selected-urgent-background:  @yellow;
+    selected-urgent-foreground:  @urgent-foreground;
+}
+
+@import "common"

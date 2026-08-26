@@ -1,6 +1,6 @@
 local function highlight_symbol(event)
 	local client = vim.lsp.get_client_by_id(event.data.client_id)
-	if not client or not client.supports_method("textDocument/documentHighlight") then
+	if not client or not client:supports_method("textDocument/documentHighlight") then
 		return
 	end
 
@@ -69,4 +69,71 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
 		vim.highlight.on_yank()
 	end,
+})
+
+local function dim_inactive_hl()
+    local normal = vim.api.nvim_get_hl(0, { name = "Normal" })
+    local bg = normal.bg
+    if bg then
+        -- Solid background: dim it by 40%
+        local r = bit.rshift(bg, 16)
+        local g = bit.rshift(bg, 8)
+        local b = bg
+        r = math.max(0, math.floor(bit.band(r, 0xff) * 0.6))
+        g = math.max(0, math.floor(bit.band(g, 0xff) * 0.6))
+        b = math.max(0, math.floor(bit.band(b, 0xff) * 0.6))
+        local dimmed = r * 0x10000 + g * 0x100 + b
+        vim.api.nvim_set_hl(0, "InactiveWindow", { bg = dimmed })
+    else
+        -- Transparent background: use dimmed fg as a faint bg
+        local fg = normal.fg
+        if fg then
+            local r = bit.rshift(fg, 16)
+            local g = bit.rshift(fg, 8)
+            local b = fg
+            r = math.max(0, math.floor(bit.band(r, 0xff) * 0.08))
+            g = math.max(0, math.floor(bit.band(g, 0xff) * 0.08))
+            b = math.max(0, math.floor(bit.band(b, 0xff) * 0.08))
+            local dimmed = r * 0x10000 + g * 0x100 + b
+            vim.api.nvim_set_hl(0, "InactiveWindow", { bg = dimmed })
+        else
+            vim.api.nvim_set_hl(0, "InactiveWindow", {})
+        end
+    end
+end
+
+dim_inactive_hl()
+
+-- Recalculate when colorscheme changes
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = dim_inactive_hl,
+})
+
+local function set_focus_highlights(active)
+    local hl = active
+        and "Normal:Normal,NormalNC:InactiveWindow"
+        or "Normal:InactiveWindow,NormalNC:InactiveWindow"
+
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        vim.api.nvim_set_option_value("winhighlight", hl, { win = win })
+    end
+end
+
+vim.api.nvim_create_autocmd("FocusGained", {
+    callback = function()
+        set_focus_highlights(true)
+    end,
+})
+
+vim.api.nvim_create_autocmd("FocusLost", {
+    callback = function()
+        set_focus_highlights(false)
+    end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "text", "markdown", "gitcommit" },
+    callback = function()
+        vim.opt_local.wrap = true
+    end,
 })
